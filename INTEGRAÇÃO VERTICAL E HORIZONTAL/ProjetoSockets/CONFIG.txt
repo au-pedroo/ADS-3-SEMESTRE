@@ -1,0 +1,7 @@
+#Configurações padrão do canal
+#Mon Mar 23 19:41:34 GMT-03:00 2026
+atrasoMensagem=80
+probabilidadeCorromper=0.02
+probabilidadeDuplicar=0.03
+probabilidadeEliminar=0.04
+tamanhoMaximoMensagem=1024
