@@ -1,0 +1,30 @@
+{
+  "expo": {
+    "name": "SprintZone",
+    "slug": "sprintzone",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/LogoSprintZone.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FF6B35"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/LogoSprintZone.png"
+    },
+    "plugins": [
+      "expo-video",
+      "expo-font"
+    ]
+  }
+}
