@@ -4,7 +4,7 @@
     "slug": "sprintzone",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/LogoSprintZone.png",
+    "icon": "./assets/Logo.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
@@ -20,7 +20,7 @@
       "predictiveBackGestureEnabled": false
     },
     "web": {
-      "favicon": "./assets/LogoSprintZone.png"
+      "favicon": "./assets/Logo.png"
     },
     "plugins": [
       "expo-video",

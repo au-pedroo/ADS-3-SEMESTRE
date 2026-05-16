@@ -12,6 +12,12 @@ import { useFonts, Montserrat_700Bold } from "@expo-google-fonts/montserrat"
 //Menu SOBRE
 import TelaSobre from "./telas/Sobre"
 
+//Menu PRODUTOS
+import TelaProdutos from "./telas/Produtos"
+
+//Menu PERFIL
+import TelaPerfil from "./telas/Perfil"
+
 //MENU - BOTTOM TABS
 const Tab = createBottomTabNavigator();
 
@@ -32,12 +38,13 @@ function Menu(){
               },
               headerShown: false,
               tabBarActiveTintColor: '#FF6B35',
-              tabBarInactiveTintColor: '#999999',
+              tabBarInactiveTintColor: '#004E89',
+              tabBarStyle: { backgroundColor: '#FFFFFF', borderTopColor: '#E0E0E0' },
             })}
           >
             <Tab.Screen name="Sobre" component={TelaSobre}/>
-            <Tab.Screen name="Produtos" component={TelaSobre}/>
-            <Tab.Screen name="Perfil" component={TelaSobre}/>
+            <Tab.Screen name="Produtos" component={TelaProdutos}/>
+            <Tab.Screen name="Perfil" component={TelaPerfil}/>
         </Tab.Navigator>
 }
 

@@ -16,7 +16,7 @@ export default function Sobre() {
   return (
     <ScrollView style={styles.container}>
       
-      <Image source={require('../assets/LogoSprintZone.png')} style={styles.logo} resizeMode="contain"/>
+      <Image source={require('../assets/Logo.png')} style={styles.logo} resizeMode="contain"/>
       
       <Texto estiloEspecifico={styles.texto}>Bem-vindo à SprintZone! Somos a sua loja online de artigos esportivos de qualidade premium. Nascemos da paixão por esportes e do compromisso de fornecer os melhores equipamentos para potencializar seu desempenho!
       {'\n'}{'\n'}
@@ -31,7 +31,7 @@ export default function Sobre() {
       
       <Image source={require('../assets/ImgLoja.png')} style={styles.imagem} resizeMode="contain"/>
       
-      <StatusBar style="light" animated />
+      <StatusBar style="dark" animated />
 
       <VideoView player={player} style={styles.video} allowsPictureInPicture/>
 
@@ -42,11 +42,11 @@ export default function Sobre() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#004E89',
+    backgroundColor: '#FFFFFF',
     paddingHorizontal:16,
   },
   texto:{
-    color: 'white',
+    color: '#000000',
     paddingVertical: 12,
   },
   imagem:{
