@@ -15,8 +15,14 @@ import TelaSobre from "./telas/Sobre"
 //Menu PRODUTOS
 import TelaProdutos from "./telas/Produtos"
 
+//Menu CARRINHO
+import TelaCarrinho from "./telas/Carrinho"
+
 //Menu PERFIL
 import TelaPerfil from "./telas/Perfil"
+
+//Contexto do Carrinho
+import { CarrinhoProvider } from "./context/CarrinhoContext"
 
 //MENU - BOTTOM TABS
 const Tab = createBottomTabNavigator();
@@ -31,6 +37,8 @@ function Menu(){
                   iconName = focused ? 'information-circle' : 'information-circle-outline';
                 }else if(route.name==="Produtos"){
                   iconName = focused ? 'basketball' : 'basketball-outline';
+                }else if(route.name==="Carrinho"){
+                  iconName = focused ? 'cart' : 'cart-outline';
                 }else if(route.name==="Perfil"){
                   iconName = focused ? 'person' : 'person-outline';
                 }
@@ -44,6 +52,7 @@ function Menu(){
           >
             <Tab.Screen name="Sobre" component={TelaSobre}/>
             <Tab.Screen name="Produtos" component={TelaProdutos}/>
+            <Tab.Screen name="Carrinho" component={TelaCarrinho}/>
             <Tab.Screen name="Perfil" component={TelaPerfil}/>
         </Tab.Navigator>
 }
@@ -58,8 +67,10 @@ export default function App() {
     return <View />
   }
 
-  return <NavigationContainer>
-            <Menu />
-        </NavigationContainer>
+  return <CarrinhoProvider>
+            <NavigationContainer>
+              <Menu />
+            </NavigationContainer>
+          </CarrinhoProvider>
   
 }

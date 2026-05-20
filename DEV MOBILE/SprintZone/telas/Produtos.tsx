@@ -1,9 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, FlatList, TouchableOpacity, Image, Text } from 'react-native';
-import { useState } from 'react';
+import { StyleSheet, View, FlatList, TouchableOpacity, Image, Text, Modal } from 'react-native';
+import { useContext, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 //Componente de Texto
 import Texto from '../componentes/Texto'
+import { CarrinhoContext } from '../context/CarrinhoContext';
 
 interface Produto {
   id: string;
@@ -16,8 +18,20 @@ interface Produto {
 
 export default function TelaProdutos() {
   const [esporteSelecionado, setEsporteSelecionado] = useState('Todos');
+  const [modalVisivel, setModalVisivel] = useState(false);
+  const [produtoSelecionado, setProdutoSelecionado] = useState<Produto | null>(null);
 
   const esportes = ['Todos', 'Futebol', 'Vôlei', 'Basquete', 'Natação', 'Corrida', 'Tênis'];
+
+  const abrirModal = (produto: Produto) => {
+    setProdutoSelecionado(produto);
+    setModalVisivel(true);
+  };
+
+  const fecharModal = () => {
+    setModalVisivel(false);
+    setProdutoSelecionado(null);
+  };
 
   const produtosData: Produto[] = [
     {
@@ -127,8 +141,11 @@ export default function TelaProdutos() {
     </TouchableOpacity>
   );
 
+  const navigation = useNavigation<any>();
+  const { adicionarAoCarrinho } = useContext(CarrinhoContext);
+
   const renderizarProduto = ({ item }: { item: Produto }) => (
-    <View style={styles.cardProduto}>
+    <TouchableOpacity style={styles.cardProduto} onPress={() => abrirModal(item)} activeOpacity={0.85}>
       <View style={styles.containerImagem}>
         <Image
           source={require('../assets/Logo.png')}
@@ -152,11 +169,17 @@ export default function TelaProdutos() {
 
         <Text style={styles.precoProduto}>R$ {item.preco.toFixed(2)}</Text>
 
-        <TouchableOpacity style={styles.botaoAdicionar}>
+        <TouchableOpacity
+          style={styles.botaoAdicionar}
+          onPress={() => {
+            adicionarAoCarrinho(item);
+            navigation.navigate('Carrinho');
+          }}
+        >
           <Text style={styles.textoBotaoAdicionar}>Adicionar ao Carrinho</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
   const renderizarHeader = () => (
@@ -187,6 +210,46 @@ export default function TelaProdutos() {
 
   return (
     <>
+      <Modal
+        visible={modalVisivel}
+        transparent
+        animationType="fade"
+        onRequestClose={fecharModal}
+      >
+        <View style={styles.modalFundo}>
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalTitulo}>Detalhes do Produto</Text>
+            {produtoSelecionado && (
+              <>
+                <View style={styles.modalImagemContainer}>
+                  <Image
+                    source={require('../assets/Logo.png')}
+                    style={styles.modalImagem}
+                    resizeMode="contain"
+                  />
+                </View>
+                <Text style={styles.modalNome}>{produtoSelecionado.nome}</Text>
+                <Text style={styles.modalDescricao}>{produtoSelecionado.descricao}</Text>
+                <View style={styles.modalLinha}>
+                  <Text style={styles.modalLabel}>Esporte:</Text>
+                  <Text style={styles.modalValor}>{produtoSelecionado.esporte}</Text>
+                </View>
+                <View style={styles.modalLinha}>
+                  <Text style={styles.modalLabel}>Preço:</Text>
+                  <Text style={styles.modalValor}>R$ {produtoSelecionado.preco.toFixed(2)}</Text>
+                </View>
+                <Text style={styles.modalInfo}>
+                  Uma ótima escolha para quem busca qualidade e conforto nas atividades esportivas.
+                </Text>
+              </>
+            )}
+            <TouchableOpacity style={styles.botaoFecharModal} onPress={fecharModal}>
+              <Text style={styles.textoBotaoFechar}>Fechar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
       <FlatList
         data={produtosFiltrados}
         renderItem={renderizarProduto}
@@ -320,6 +383,93 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textoBotaoAdicionar: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: '700',
+    fontFamily: 'FontePadrao',
+  },
+  modalFundo: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.45)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  modalContainer: {
+    width: '100%',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 18,
+    padding: 24,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 10,
+  },
+  modalTitulo: {
+    fontSize: 18,
+    color: '#FF6B35',
+    fontWeight: '700',
+    marginBottom: 14,
+    fontFamily: 'FontePadrao',
+  },
+  modalNome: {
+    fontSize: 16,
+    color: '#004E89',
+    fontWeight: '700',
+    marginBottom: 10,
+    fontFamily: 'FontePadrao',
+  },
+  modalDescricao: {
+    fontSize: 14,
+    color: '#666666',
+    marginBottom: 12,
+    fontFamily: 'FontePadrao',
+    lineHeight: 20,
+  },
+  modalLinha: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 8,
+  },
+  modalLabel: {
+    color: '#004E89',
+    fontSize: 13,
+    fontWeight: '700',
+    fontFamily: 'FontePadrao',
+  },
+  modalValor: {
+    color: '#004E89',
+    fontSize: 13,
+    fontFamily: 'FontePadrao',
+  },
+  modalInfo: {
+    color: '#666666',
+    fontSize: 13,
+    marginBottom: 20,
+    fontFamily: 'FontePadrao',
+    lineHeight: 20,
+  },
+  modalImagemContainer: {
+    width: '100%',
+    height: 180,
+    backgroundColor: '#F8F8F8',
+    borderRadius: 14,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  modalImagem: {
+    width: '70%',
+    height: '70%',
+  },
+  botaoFecharModal: {
+    backgroundColor: '#004E89',
+    paddingVertical: 12,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  textoBotaoFechar: {
     color: 'white',
     fontSize: 14,
     fontWeight: '700',
